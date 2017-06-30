@@ -5,6 +5,7 @@ package top.lmoon.test;
 
 import java.awt.Rectangle;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -26,14 +27,14 @@ public class ServerDealObject {
 
 	private static ExecutorService threadPool = Executors.newCachedThreadPool();
 
-	public static void handleOutputStream(final DataOutputStream dos) {
+	public static void handleOutputStream(final Robot robot,final Rectangle rt,final DataOutputStream dos) {
 
-		Runnable runnable = new Runnable() {
-
-			@Override
-			public void run() {
+//		Runnable runnable = new Runnable() {
+//
+//			@Override
+//			public void run() {
 				try {
-					byte[] data = createImage();
+					byte[] data = createImage(robot,rt);
 					// 发送:
 					// 1.先写一个int ,代表图片数据长度
 					dos.writeInt(data.length);
@@ -44,19 +45,20 @@ public class ServerDealObject {
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					throw new MyException(e, "server over!");
 				}
-			}
-		};
-		threadPool.submit(runnable);
+//			}
+//		};
+//		threadPool.submit(runnable);
 	}
 
 	public static void handleInputStream(final Robot robot,
 			final ObjectInputStream ois) {
 
-		Runnable runnable = new Runnable() {
-
-			@Override
-			public void run() {
+//		Runnable runnable = new Runnable() {
+//
+//			@Override
+//			public void run() {
 				try {
 					handleEvents(robot, (InputEvent) ois.readObject());
 				} catch (ClassNotFoundException e) {
@@ -66,9 +68,9 @@ public class ServerDealObject {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-		};
-		threadPool.submit(runnable);
+//			}
+//		};
+//		threadPool.submit(runnable);
 	}
 
 	private static void handleEvents(Robot robot, InputEvent event) {
@@ -77,6 +79,7 @@ public class ServerDealObject {
 		KeyEvent kevent = null; // 键盘事件
 		int mousebuttonmask = -100; // 鼠标按键
 
+		System.out.println(event.getID());
 		switch (event.getID()) {
 		case MouseEvent.MOUSE_MOVED: // 鼠标移动
 			mevent = (MouseEvent) event;
@@ -128,12 +131,12 @@ public class ServerDealObject {
 	}
 
 	// 取得一张屏幕图片,转成字节数组返回
-	private static byte[] createImage() throws Exception {
-		java.awt.Robot robot = new java.awt.Robot();
-		java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
-		java.awt.Dimension dm = tk.getScreenSize();
+	private static byte[] createImage(Robot robot,Rectangle rt) throws Exception {
+//		java.awt.Robot robot = new java.awt.Robot();
+//		java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
+//		java.awt.Dimension dm = tk.getScreenSize();
 		// 设定区域的大小
-		Rectangle rt = new Rectangle(0, 0, dm.width, dm.height);
+//		Rectangle rt = new Rectangle(0, 0, width, height);
 		// 取得指定大小的一张图片
 		BufferedImage image = robot.createScreenCapture(rt);
 		// 创建一段内存流

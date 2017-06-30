@@ -155,11 +155,11 @@ public class ClientDealObject extends Thread {
 				javax.swing.ImageIcon ic = new ImageIcon(image);
 
 				Image img = ic.getImage();
-				Toolkit tk = Toolkit.getDefaultToolkit();
-				Dimension d = tk.getScreenSize();
-
-				int w = d.width;
-				int h = d.height;
+//				Toolkit tk = Toolkit.getDefaultToolkit();
+//				Dimension d = tk.getScreenSize();
+//
+//				int w = d.width;
+//				int h = d.height;
 				BufferedImage bi = resize(img, la_image.getWidth(), la_image.getHeight());
 
 				la_image.setIcon(new ImageIcon(bi));

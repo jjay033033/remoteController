@@ -3,10 +3,10 @@
  */
 package top.lmoon.test;
 
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+import java.awt.Toolkit;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -58,12 +58,16 @@ public class Server {
 			// 截图，发送
 			try {
 				Robot robot = new Robot();
+				Toolkit tk = Toolkit.getDefaultToolkit();
+				Dimension dm = tk.getScreenSize();
+//				 设定区域的大小
+				Rectangle rt = new Rectangle(0, 0, dm.width, dm.height);
 				socket = serverSocket.accept();
 				dos = new DataOutputStream(socket.getOutputStream());
 				ois = new ObjectInputStream(socket.getInputStream());
 				while (true) {									
 					ServerDealObject.handleInputStream(robot, ois);
-					ServerDealObject.handleOutputStream(dos);
+					ServerDealObject.handleOutputStream(robot,rt,dos);
 					Thread.sleep(50);
 				}
 //			} catch (SocketException ef) {

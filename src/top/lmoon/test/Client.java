@@ -44,7 +44,7 @@ public class Client extends JFrame {
            jlp.setLayout(new FlowLayout());
           
            jlp.add(new JLabel("远程IP地址："));
-           iptf.setText("127.0.0.1");
+           iptf.setText("192.168.1.103");
            porttf.setText("8888");
            jlp.add(iptf);
            jlp.add(new JLabel("端口："));
