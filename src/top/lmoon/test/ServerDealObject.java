@@ -18,6 +18,10 @@ import java.io.ObjectInputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+import sun.awt.image.codec.JPEGImageEncoderImpl;
+
 /**
  * @author guozy
  * @date 2017-6-30
@@ -29,38 +33,44 @@ public class ServerDealObject {
 
 	public static void handleOutputStream(final Robot robot,final Rectangle rt,final DataOutputStream dos) {
 
-//		Runnable runnable = new Runnable() {
-//
-//			@Override
-//			public void run() {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
 				try {
-					byte[] data = createImage(robot,rt);
-					// 发送:
-					// 1.先写一个int ,代表图片数据长度
-					dos.writeInt(data.length);
-					// 2.写入图片字节数据
-					dos.write(data);
-					dos.flush();
+					while(true){
+						byte[] data = createImage(robot,rt);
+						// 发送:
+						// 1.先写一个int ,代表图片数据长度
+						dos.writeInt(data.length);
+						// 2.写入图片字节数据
+						dos.write(data);
+						dos.flush();
+					}
+					
 					
 				}catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					throw new MyException(e, "server over!");
 				}
-//			}
-//		};
-//		threadPool.submit(runnable);
+			}
+		};
+		threadPool.submit(runnable);
 	}
 
 	public static void handleInputStream(final Robot robot,
 			final ObjectInputStream ois) {
 
-//		Runnable runnable = new Runnable() {
-//
-//			@Override
-//			public void run() {
+		Runnable runnable = new Runnable() {
+
+			@Override
+			public void run() {
 				try {
-					handleEvents(robot, (InputEvent) ois.readObject());
+					while(true){
+						handleEvents(robot, (InputEvent) ois.readObject());
+					}
+					
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -68,9 +78,9 @@ public class ServerDealObject {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-//			}
-//		};
-//		threadPool.submit(runnable);
+			}
+		};
+		threadPool.submit(runnable);
 	}
 
 	private static void handleEvents(Robot robot, InputEvent event) {
@@ -143,7 +153,9 @@ public class ServerDealObject {
 
 		java.io.ByteArrayOutputStream temB = new ByteArrayOutputStream();
 		// 将图片数据写入内存流中
-		javax.imageio.ImageIO.write(image, "jpeg", temB);
+//		javax.imageio.ImageIO.write(image, "jpeg", temB);
+		JPEGImageEncoderImpl encoder = new JPEGImageEncoderImpl(temB);
+		encoder.encode(image);
 		// 做为字节数组返回
 		byte[] data = temB.toByteArray();
 		return data;

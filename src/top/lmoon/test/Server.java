@@ -65,20 +65,12 @@ public class Server {
 				socket = serverSocket.accept();
 				dos = new DataOutputStream(socket.getOutputStream());
 				ois = new ObjectInputStream(socket.getInputStream());
-				while (true) {									
+//				while (true) {									
 					ServerDealObject.handleInputStream(robot, ois);
 					ServerDealObject.handleOutputStream(robot,rt,dos);
 					Thread.sleep(50);
-				}
-//			} catch (SocketException ef) {
-//				// ef.printStackTrace();
-//				rs.destroy();
-//				throw new MyException("客户端SOCKET已断开连接，无法发送图片信息。。");
+//				}
 
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generatedcatch block
-//				rs.destroy();
-//				throw new MyException(e,"客户端已中断连接，无法发送图片信息。。");
 			} catch (IOException e) {
 				// TODO Auto-generatedcatch block
 //				rs.destroy();
