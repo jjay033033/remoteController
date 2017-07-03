@@ -68,7 +68,8 @@ public class ServerDealObject {
 			public void run() {
 				try {
 					while(true){
-						handleEvents(robot, (InputEvent) ois.readObject());
+						
+						handleEvents(ois.readInt(),ois.readInt(),robot, (InputEvent) ois.readObject());
 					}
 					
 				} catch (ClassNotFoundException e) {
@@ -83,7 +84,7 @@ public class ServerDealObject {
 		threadPool.submit(runnable);
 	}
 
-	private static void handleEvents(Robot robot, InputEvent event) {
+	private static void handleEvents(int widthRate,int heightRate,Robot robot, InputEvent event) {
 		MouseEvent mevent = null; // 鼠标事件
 		MouseWheelEvent mwevent = null;// 鼠标滚动事件
 		KeyEvent kevent = null; // 键盘事件
@@ -93,18 +94,21 @@ public class ServerDealObject {
 		switch (event.getID()) {
 		case MouseEvent.MOUSE_MOVED: // 鼠标移动
 			mevent = (MouseEvent) event;
-			robot.mouseMove(mevent.getX(), mevent.getY());
+			robot.mouseMove(mevent.getX()/widthRate, mevent.getY()/heightRate);
+//			robot.mouseMove(mevent.getPoint().x, mevent.getPoint().y);
 			break;
 		case MouseEvent.MOUSE_PRESSED: // 鼠标键按下
 			mevent = (MouseEvent) event;
-			robot.mouseMove(mevent.getX(), mevent.getY());
+			robot.mouseMove(mevent.getX()/widthRate, mevent.getY()/heightRate);
+//			robot.mouseMove(mevent.getPoint().x, mevent.getPoint().y);
 			mousebuttonmask = getMouseClick(mevent.getButton());
 			if (mousebuttonmask != -100)
 				robot.mousePress(mousebuttonmask);
 			break;
 		case MouseEvent.MOUSE_RELEASED: // 鼠标键松开
 			mevent = (MouseEvent) event;
-			robot.mouseMove(mevent.getX(), mevent.getY());
+			robot.mouseMove(mevent.getX()/widthRate, mevent.getY()/heightRate);
+//			robot.mouseMove(mevent.getPoint().x, mevent.getPoint().y);
 			mousebuttonmask = getMouseClick(mevent.getButton());// 取得鼠标按键
 			if (mousebuttonmask != -100)
 				robot.mouseRelease(mousebuttonmask);
@@ -115,7 +119,8 @@ public class ServerDealObject {
 			break;
 		case MouseEvent.MOUSE_DRAGGED: // 鼠标拖拽
 			mevent = (MouseEvent) event;
-			robot.mouseMove(mevent.getX(), mevent.getY());
+			robot.mouseMove(mevent.getX()/widthRate, mevent.getY()/heightRate);
+//			robot.mouseMove(mevent.getPoint().x, mevent.getPoint().y);
 			break;
 		case KeyEvent.KEY_PRESSED: // 按键
 			kevent = (KeyEvent) event;

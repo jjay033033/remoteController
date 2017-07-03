@@ -3,11 +3,10 @@
  */
 package top.lmoon.test;
 
-import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
-import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -22,7 +21,6 @@ import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JLayeredPane;
 
 /**
  * @author guozy
@@ -34,6 +32,9 @@ public class ClientDealObject extends Thread {
 	private java.io.DataInputStream dins;
 	private java.io.ObjectOutputStream ous;
 	private javax.swing.JLabel la_image = new javax.swing.JLabel();
+	
+	private static int widthRate = 1;
+	private static int heightRate = 1;
 
 	public void showUI() {
 		javax.swing.JFrame frame = new javax.swing.JFrame("远程控制");
@@ -70,7 +71,6 @@ public class ClientDealObject extends Thread {
 
 		frame.addMouseWheelListener(new MouseWheelListener() {
 			public void mouseWheelMoved(MouseWheelEvent e) {
-
 				sendEventObject(e);
 
 			}
@@ -136,6 +136,15 @@ public class ClientDealObject extends Thread {
 	private void sendEventObject(java.awt.event.InputEvent event) {
 
 		try {
+//			if(event instanceof MouseEvent){
+//				Point p = ((MouseEvent) event).getPoint();
+//				p.x = p.x/widthRate;
+//				p.y = p.y/heightRate;
+//			}
+//			ous.write(widthRate);
+//			ous.write(heightRate);
+			ous.writeInt(widthRate);
+			ous.writeInt(heightRate);
 			ous.writeObject(event);
 		} catch (Exception ef) {
 			ef.printStackTrace();
@@ -176,6 +185,8 @@ public class ClientDealObject extends Thread {
 	private static BufferedImage resize(Image img, int newW, int newH) {
 		int w = img.getWidth(null);
 		int h = img.getHeight(null);
+		widthRate = w/newW;
+		heightRate = h/newH;
 		BufferedImage dimg = new BufferedImage(newW, newH,
 				BufferedImage.TYPE_INT_BGR);
 		Graphics2D g = dimg.createGraphics();
