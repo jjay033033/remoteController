@@ -1,5 +1,8 @@
 package top.lmoon.test;
 
+import top.lmoon.rc.client.Client;
+import top.lmoon.rc.server.Server;
+
 public class Main {
 	
 	public static void main(String[] args) {

@@ -1,7 +1,7 @@
 /**
  * @copyright 2017 tianya.cn
  */
-package top.lmoon.test;
+package top.lmoon.rc.util;
 
 import javax.swing.JOptionPane;
 
