@@ -145,11 +145,12 @@ public class ClientDealObject extends Thread {
 		try {
 			oos.writeObject(event);
 		} catch (Exception ef) {
-			ef.printStackTrace();
+			ErrorHandler.error(ef);
 		}
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public void run() {
 		try {
 			double serverWidth = dis.readDouble();
@@ -172,7 +173,8 @@ public class ClientDealObject extends Thread {
 
 			}
 		} catch (Exception ef) {
-			ErrorHandler.error(ef,"网络故障：无法读出远程图片数据!");
+			ErrorHandler.error(ef,"服务器已关闭或网络故障：无法读出远程图片数据!",frame);
+			System.exit(0);;
 		}
 
 	}

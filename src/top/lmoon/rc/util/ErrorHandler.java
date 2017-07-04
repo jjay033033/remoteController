@@ -3,6 +3,8 @@
  */
 package top.lmoon.rc.util;
 
+import java.awt.Component;
+
 import javax.swing.JOptionPane;
 
 /**
@@ -18,16 +20,28 @@ public class ErrorHandler {
 		}
 	}
 
-	public static void errorDialog(String info) {
-		if (info != null) {
-			System.out.println(info);
-			JOptionPane.showMessageDialog(null, info, "提示", JOptionPane.ERROR_MESSAGE);
+	public static void errorDialog(String msg,Component parentComponent) {
+		if (msg != null) {
+			log(msg);
+			JOptionPane.showMessageDialog(parentComponent, msg, "提示", JOptionPane.ERROR_MESSAGE);
 		}
 	}
+	
+	public static void errorDialog(String msg) {
+		errorDialog(msg,null);
+	}
 
-	public static void error(Exception e, String info) {
-		errorDialog(info);
+	public static void error(Exception e, String msg,Component parentComponent) {
+		errorDialog(msg,parentComponent);
 		error(e);
+	}
+	
+	public static void error(Exception e, String msg) {
+		error(e, msg, null);
+	}
+	
+	public static void log(String msg){
+		System.out.println(msg);
 	}
 
 }

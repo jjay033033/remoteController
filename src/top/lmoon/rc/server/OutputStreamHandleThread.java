@@ -62,7 +62,8 @@ public class OutputStreamHandleThread extends Thread{
 			
 		}catch (Exception e) {
 			// TODO Auto-generated catch block
-			ErrorHandler.error(e, "server over!");
+//			ErrorHandler.error(e, "server over!");
+			ErrorHandler.log("客户端已退出!");
 		}
 	}
 

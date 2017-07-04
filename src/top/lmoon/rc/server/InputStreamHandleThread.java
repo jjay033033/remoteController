@@ -36,13 +36,10 @@ public class InputStreamHandleThread extends Thread {
 				handleEvents(robot);
 			}
 
-		} catch (ClassNotFoundException e) {
-			ErrorHandler.error(e);
-		} catch (IOException e) {
-			ErrorHandler.error(e);
-		} catch (AWTException e) {
-			ErrorHandler.error(e);
-		}
+		} catch (Exception e) {
+//			ErrorHandler.error(e);
+			ErrorHandler.log("客户端已退出!");
+		} 
 	}
 
 	private void handleEvents(Robot robot) throws ClassNotFoundException, IOException {

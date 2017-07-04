@@ -19,6 +19,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import top.lmoon.rc.util.ErrorHandler;
+import top.lmoon.rc.util.IpUtil;
 import top.lmoon.rc.util.MyException;
 
 /**
@@ -35,6 +36,8 @@ public class Client extends JFrame {
 	/**
 	 * @param args
 	 */
+	
+	public static Client client;
 	public JTextField iptf = new JTextField(10);
 	public JTextField porttf = new JTextField(3);
 	public JButton jb1 = new JButton("连接");
@@ -63,24 +66,26 @@ public class Client extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 
 				try {
-
-					ClientDealObject.connect(iptf.getText(), Integer.parseInt(porttf.getText().trim()));
-
+					if(IpUtil.checkIp(iptf.getText())){
+						ClientDealObject.connect(iptf.getText(), Integer.parseInt(porttf.getText().trim()));
+					}else{
+						ErrorHandler.errorDialog("IP地址输入有误！",client);
+						System.exit(0);
+					}
+					
 				} catch (NumberFormatException e1) {
 					// 端口号格式输入出错
-					ErrorHandler.error(e1, "IP地址或端口号输入出错，无法取得连接。。");
+					ErrorHandler.error(e1, "端口号输入出错，无法取得连接。。",client);
 					System.exit(0);
-					destroy();
 				} catch (MyException e1) {
 					// JOptionPane.showMessageDialog(null,e1.info,"提示",JOptionPane.ERROR_MESSAGE);
 				} catch (Exception ed) {
 					// "远程不允许被控，无法取得连接。。
-					ErrorHandler.error(ed, "远程不允许被控，无法取得连接。。");
+					ErrorHandler.error(ed, "远程不允许被控，无法取得连接。。",client);
 					System.exit(0);
-					destroy();
 				}
 				// 连接成功
-
+				client.setVisible(false);
 			}
 
 		});
@@ -89,7 +94,6 @@ public class Client extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				JOptionPane.showMessageDialog(null, "断开控制端窗口", "提示", JOptionPane.INFORMATION_MESSAGE);
 				System.exit(0);
-				destroy();
 			}
 
 		});
@@ -114,7 +118,8 @@ public class Client extends JFrame {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		// new RemoteControlLoginFrame().getLocalIP();
-		new Client().launch();
+		client = new Client();
+		client.launch();
 	}
 
 	public String getLocalIP() {
@@ -130,10 +135,6 @@ public class Client extends JFrame {
 		ipstr = ipstr.substring(ipstr.indexOf("/") + 1);
 		System.out.println(ipstr);
 		return ipstr;
-	}
-
-	public void destroy() {
-		this.destroy();
 	}
 
 }
