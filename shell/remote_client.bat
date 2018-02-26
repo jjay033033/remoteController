@@ -1,1 +1,1 @@
-java -jar C:\Users\LMoon\Desktop\remote.jar 1
+start javaw -jar C:\Users\LMoon\Desktop\remote.jar 1
